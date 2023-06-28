@@ -4,14 +4,8 @@
  * and open the template in the editor.
  */
 package proyecto2edd;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import java.io.FileWriter;
+import static proyecto2edd.Proyecto2EDD.hashtable;
 
 /**
  *
@@ -56,9 +50,19 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().add(RegistroClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
 
         BuscarReserva.setText("Buscar reserva");
+        BuscarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarReservaActionPerformed(evt);
+            }
+        });
         getContentPane().add(BuscarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, -1, -1));
 
         HistorialHab.setText("Historial de habitaciones");
+        HistorialHab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HistorialHabActionPerformed(evt);
+            }
+        });
         getContentPane().add(HistorialHab, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
         Salir.setText("Salir");
@@ -74,14 +78,21 @@ public class Menu extends javax.swing.JFrame {
 
     private void RegistroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroClientesActionPerformed
         // TODO add your handling code here:
-        String Nombre = JOptionPane.showInputDialog("Ingrese el nombre del cliente: ");
-        String Apellido = JOptionPane.showInputDialog("Ingrese el apellido del cliente: ");
+        hashtable.buscarhab();
     }//GEN-LAST:event_RegistroClientesActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_SalirActionPerformed
+
+    private void BuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarReservaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BuscarReservaActionPerformed
+
+    private void HistorialHabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistorialHabActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HistorialHabActionPerformed
 
     /**
      * @param args the command line arguments
