@@ -29,7 +29,7 @@ static BST arbolcedulas = new BST();
         Menu menu = new Menu();
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
-        //cargar_datos();
+        cargar_datos();
         cargar_reserva();
     }
     
@@ -138,12 +138,11 @@ try {
         String llegada = datoscliente[7].replace(" "," ");
 //        String salida = datoscliente[8].replace(" "," ");
         String info = name+" "+email+" "+genero+" "+roomType+" "+phone+" "+llegada;
+//        System.out.println(info);
         TreeNode n = new TreeNode(cedula,info);
-        System.out.println(n.getCedula());
         if(arbolcedulas.getRoot() == null){
             arbolcedulas.setRoot(n);
         }else{
-            System.out.println(arbolcedulas.getRoot().getCedula());
             TreeNode root = arbolcedulas.getRoot();
             arbolcedulas.insert(root,n);
           }
