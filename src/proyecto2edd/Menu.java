@@ -6,6 +6,7 @@
 package proyecto2edd;
 import javax.swing.JOptionPane;
 import static proyecto2edd.Proyecto2EDD.hashtable;
+import static proyecto2edd.Proyecto2EDD.arbolcedulas;
 
 /**
  *
@@ -15,11 +16,6 @@ public class Menu extends javax.swing.JFrame {
 
     /**
      * Creates new form Menu
-     */
-    public Menu() {
-        initComponents();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -88,6 +84,11 @@ public class Menu extends javax.swing.JFrame {
 
     private void BuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarReservaActionPerformed
         // TODO add your handling code here:
+        String cedula1 = JOptionPane.showInputDialog("Ingrese la cedula de la persona que desea buscar su reserva: ");
+        int cedula = Integer.parseInt(cedula1);
+        TreeNode aux = arbolcedulas.getRoot();
+        arbolcedulas.search(aux,cedula);
+        
     }//GEN-LAST:event_BuscarReservaActionPerformed
 
     private void HistorialHabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistorialHabActionPerformed
