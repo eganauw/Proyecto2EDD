@@ -1,21 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package proyecto2edd;
 import javax.swing.JOptionPane;
 import static proyecto2edd.Proyecto2EDD.hashtable;
 import static proyecto2edd.Proyecto2EDD.arbolcedulas;
-
+import static proyecto2edd.Proyecto2EDD.arbolhistorial;
 /**
  *
- * @author juanm
+ * @author rodri
  */
-public class Menu extends javax.swing.JFrame {
+public class Menu1 extends javax.swing.JFrame {
 
     /**
-     * Creates new form Menu
+     * Creates new form Menu1
+     */
+    public Menu1() {
+        initComponents();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,28 +34,32 @@ public class Menu extends javax.swing.JFrame {
         BuscarReserva = new javax.swing.JButton();
         HistorialHab = new javax.swing.JButton();
         Salir = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Microsoft YaHei Light", 3, 36)); // NOI18N
         jLabel1.setText("HOTEL UNIMET");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(173, 25, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 280, -1));
 
-        RegistroClientes.setText("Buscar clientes");
+        RegistroClientes.setText("Buscar Clientes");
         RegistroClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RegistroClientesActionPerformed(evt);
             }
         });
-        getContentPane().add(RegistroClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
+        getContentPane().add(RegistroClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 140, -1));
 
-        BuscarReserva.setText("Buscar reserva");
+        BuscarReserva.setText("Buscar Reserva");
         BuscarReserva.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BuscarReservaActionPerformed(evt);
             }
         });
-        getContentPane().add(BuscarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, -1, -1));
+        getContentPane().add(BuscarReserva, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 180, -1, -1));
 
         HistorialHab.setText("Historial de habitaciones");
         HistorialHab.addActionListener(new java.awt.event.ActionListener() {
@@ -59,7 +67,7 @@ public class Menu extends javax.swing.JFrame {
                 HistorialHabActionPerformed(evt);
             }
         });
-        getContentPane().add(HistorialHab, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 170, -1, -1));
+        getContentPane().add(HistorialHab, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, -1, -1));
 
         Salir.setText("Salir");
         Salir.addActionListener(new java.awt.event.ActionListener() {
@@ -67,14 +75,29 @@ public class Menu extends javax.swing.JFrame {
                 SalirActionPerformed(evt);
             }
         });
-        getContentPane().add(Salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 190, -1, -1));
+        getContentPane().add(Salir, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 270, 60, -1));
+
+        jLabel2.setText("------------------------------------------ o ---------------------------------------------");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 370, -1));
+
+        jButton1.setText("Check-in");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 140, -1));
+
+        jButton2.setText("Check-out");
+        jButton2.setActionCommand("Check-out");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 130, 100, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void RegistroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroClientesActionPerformed
         // TODO add your handling code here:
-        hashtable.buscarhab();
+         hashtable.buscarhab();
     }//GEN-LAST:event_RegistroClientesActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
@@ -85,15 +108,39 @@ public class Menu extends javax.swing.JFrame {
     private void BuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarReservaActionPerformed
         // TODO add your handling code here:
         String cedula1 = JOptionPane.showInputDialog("Ingrese la cedula de la persona que desea buscar su reserva: ");
+        cedula1 = cedula1.replace(".","");
+        try{
         int cedula = Integer.parseInt(cedula1);
         TreeNode aux = arbolcedulas.getRoot();
-        arbolcedulas.search(aux,cedula);
-        
+        if(arbolcedulas.isInTheTree(aux, cedula)){
+        JOptionPane.showMessageDialog(null, arbolcedulas.search(aux,cedula).getData());
+        }else{
+            JOptionPane.showMessageDialog(null, "La cédula ingresada no se encuentra en la lista de reservas.");
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error, ingrese una cédula válida.");
+        }
     }//GEN-LAST:event_BuscarReservaActionPerformed
 
     private void HistorialHabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistorialHabActionPerformed
         // TODO add your handling code here:
+        String habS = JOptionPane.showInputDialog("Ingrese el número de la habitación: ");
+        try{
+        int hab = Integer.parseInt(habS);
+        Habitacion aux = arbolhistorial.getRoot();
+        if(arbolhistorial.isInTheTree(aux, hab)){
+        JOptionPane.showMessageDialog(null, "Habitacion "+habS+":\n"+arbolhistorial.search(aux,hab).getHistorial());
+        }else{
+            JOptionPane.showMessageDialog(null, "La habitación "+habS+" no fue encontrada.");
+        }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error, ingrese una habitación válida.");
+        }
     }//GEN-LAST:event_HistorialHabActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -112,19 +159,21 @@ public class Menu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Menu1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new Menu().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Menu1().setVisible(true);
+            }
         });
     }
 
@@ -133,6 +182,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton HistorialHab;
     private javax.swing.JButton RegistroClientes;
     private javax.swing.JButton Salir;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }

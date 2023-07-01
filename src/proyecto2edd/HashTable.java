@@ -51,7 +51,6 @@ public class HashTable {
             current.next = newNode;
         }
         count+=1;
-            System.out.println("Cliente "+name+" agregado en index: "+index);
         size++;
     }
     

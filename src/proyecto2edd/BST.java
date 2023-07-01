@@ -57,8 +57,8 @@ public class BST {
         if (aux == null) return null;
         
         if (aux.getCedula() == cedula) {
-            String data = aux.getData();
-            System.out.println(data);
+           // String data = aux.getData();
+            //System.out.println(data);
             return aux;
         } else if(cedula < aux.getCedula()) {
             return search(aux.getLeft(), cedula);
