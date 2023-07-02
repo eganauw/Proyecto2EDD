@@ -25,15 +25,16 @@ public class HashTable {
     
     public int hash(String key) {
         int hash = 0;
+        int prime = 31; // A commonly used prime number
+
         for (char c : key.toCharArray()) {
-            hash += c;
-        }
-        return hash % getTable().length;
-    }
+            hash = (hash * prime) + c;
+        } return Math.abs(hash) % getTable().length;
+}
+    
 
     //Add a guest to the hash table
         public void addGuest(clientehospedado cliente , int roomNumber) {
-        int count = 0;
         if (getSize() >= getTable().length * LOAD_FACTOR) {
             resizeTable();
         }
@@ -50,7 +51,6 @@ public class HashTable {
             }
             current.setNext(newNode);
         }
-        count+=1;
         size++;
     }
     
@@ -93,30 +93,26 @@ public class HashTable {
         }
     }
     
-     public void buscarhab(){
-        String nombre = JOptionPane.showInputDialog("Ingrese el primer nombre del huesped: ");
-        String apellido = JOptionPane.showInputDialog("Ingrese el apellido del huesped: ");
-        String nombrecompleto = nombre+" "+apellido;
+     public void buscarhab(String nombre, String apellido){
+        String nombrecompleto = nombre+apellido;
         int roomNumber = hashtable.getRoomNumber(nombrecompleto);
         if (roomNumber != -1) {
-            JOptionPane.showMessageDialog(null,"Guest " + nombrecompleto + " is staying in room number " + roomNumber);
+            JOptionPane.showMessageDialog(null,"El cliente " + nombre+" "+apellido + " esta hospedado en la habitación #" + roomNumber);
         } else {
-            JOptionPane.showMessageDialog(null,"Guest " + nombrecompleto + " not found.");
+            JOptionPane.showMessageDialog(null,"El cliente " + nombrecompleto + " no fue encontrado");
         }
     }
      
      public int getRoomNumber(String nombrecompleto) {
         int index = hash(nombrecompleto);
         Node current = getTable()[index];
-
         while (current != null) {
             if (current.getCliente().getNombre().equals(nombrecompleto)) {
                 return current.getRoomNumber();
             }
             current = current.getNext();
         }
-
-        return -1; // Guest not found
+        return -1; 
     }
 
     /**

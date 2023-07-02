@@ -99,7 +99,9 @@ public class Menu1 extends javax.swing.JFrame {
 
     private void RegistroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroClientesActionPerformed
         // TODO add your handling code here:
-         hashtable.buscarhab();
+        String nombre = JOptionPane.showInputDialog("Ingrese el primer nombre del huesped: ");
+        String apellido = JOptionPane.showInputDialog("Ingrese el apellido del huesped: ");
+         hashtable.buscarhab(nombre,apellido);
     }//GEN-LAST:event_RegistroClientesActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed

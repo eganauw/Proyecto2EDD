@@ -22,6 +22,7 @@ static HashTable hashtable = new HashTable();
 static BST arbolcedulas = new BST();
 static BST2 arbolhistorial = new BST2();
 static RoomsList roomslist = new RoomsList();
+
     /**
      * @param args the command line arguments
      */
@@ -41,20 +42,17 @@ static RoomsList roomslist = new RoomsList();
         String[] clientes = texto.split("\n");
         for(int i =0;i<clientes.length;i++){
         String[] datoscliente = clientes[i].split("   ");
-            if(!isNumeric(datoscliente[0])){
-            i++; 
-            }else{
+            if(isNumeric(datoscliente[0])){
             int roomNumber = Integer.parseInt(datoscliente[0]);
-            String name = datoscliente[1].replace(" ", "");
-            String apellido = datoscliente[2].replace(" ","");
-            String nombre = name+" "+apellido;
+            String name = datoscliente[1];
+            String apellido = datoscliente[2];
+            String nombre = name+apellido;
             String correo = datoscliente[3];
             String genero = datoscliente[4];
             String celular = datoscliente[5];
             String llegada = datoscliente[6];
             clientehospedado cliente = new clientehospedado(nombre,correo,genero,celular,llegada);
             hashtable.addGuest(cliente, roomNumber);
-                System.out.println(cliente.getNombre());
             Room aux = roomslist.pFirst;
             while(aux!=null){
                 if(aux.numero == roomNumber){
