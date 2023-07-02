@@ -32,23 +32,23 @@ public class HashTable {
     }
 
     //Add a guest to the hash table
-        public void addGuest(String name, int roomNumber) {
+        public void addGuest(clientehospedado cliente , int roomNumber) {
         int count = 0;
         if (getSize() >= getTable().length * LOAD_FACTOR) {
             resizeTable();
         }
 
-        int index = hash(name);
-        Node newNode = new Node(name, roomNumber);
+        int index = hash(cliente.getNombre());
+        Node newNode = new Node(cliente, roomNumber);
 
         if (getTable()[index] == null) {
             table[index] = newNode;
         } else {
             Node current = getTable()[index];
-            while (current.next != null) {
-                current = current.next;
+            while (current.getNext() != null) {
+                current = current.getNext();
             }
-            current.next = newNode;
+            current.setNext(newNode);
         }
         count+=1;
         size++;
@@ -61,20 +61,20 @@ public class HashTable {
 
         for (Node currentNode : getTable()) {
             while (currentNode != null) {
-                int newIndex = hash(currentNode.name);
-                Node newNode = new Node(currentNode.name, currentNode.roomNumber);
+                int newIndex = hash(currentNode.getCliente().getNombre());
+                Node newNode = new Node(currentNode.getCliente(), currentNode.getRoomNumber());
 
                 if (newTable[newIndex] == null) {
                     newTable[newIndex] = newNode;
                 } else {
                     Node current = newTable[newIndex];
-                    while (current.next != null) {
-                        current = current.next;
+                    while (current.getNext() != null) {
+                        current = current.getNext();
                     }
-                    current.next = newNode;
+                    current.setNext(newNode);
                 }
 
-                currentNode = currentNode.next;
+                currentNode = currentNode.getNext();
             }
         }
 
@@ -86,8 +86,8 @@ public class HashTable {
             Node current = getTable()[i];
             System.out.print("Index " + i + ": ");
             while (current != null) {
-                System.out.print("(" + current.name + ", " + current.roomNumber + ") ");
-                current = current.next;
+                System.out.print("(" + current.getCliente().getNombre() + ", " + current.getRoomNumber() + ") ");
+                current = current.getNext();
             }
             System.out.println();
         }
@@ -104,17 +104,16 @@ public class HashTable {
             JOptionPane.showMessageDialog(null,"Guest " + nombrecompleto + " not found.");
         }
     }
-    
-    
+     
      public int getRoomNumber(String nombrecompleto) {
         int index = hash(nombrecompleto);
         Node current = getTable()[index];
 
         while (current != null) {
-            if (current.name.equals(nombrecompleto)) {
-                return current.roomNumber;
+            if (current.getCliente().getNombre().equals(nombrecompleto)) {
+                return current.getRoomNumber();
             }
-            current = current.next;
+            current = current.getNext();
         }
 
         return -1; // Guest not found

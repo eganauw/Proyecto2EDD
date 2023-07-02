@@ -4,9 +4,11 @@
  */
 package proyecto2edd;
 import javax.swing.JOptionPane;
+import javax.swing.JDialog;
 import static proyecto2edd.Proyecto2EDD.hashtable;
 import static proyecto2edd.Proyecto2EDD.arbolcedulas;
 import static proyecto2edd.Proyecto2EDD.arbolhistorial;
+import static proyecto2edd.Proyecto2EDD.roomslist;
 /**
  *
  * @author rodri
@@ -140,6 +142,46 @@ public class Menu1 extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String scedula = JOptionPane.showInputDialog("Ingrese la cédula del huésped: ");
+        scedula = scedula.replace(".", "");
+        try{
+        int cedula = Integer.parseInt(scedula);
+        TreeNode aux = arbolcedulas.getRoot();
+        if(arbolcedulas.isInTheTree(aux, cedula)){
+            TreeNode cliente = arbolcedulas.search(aux, cedula);
+            String[] datoss = cliente.getData().split("/");
+            String nombre = datoss[0];
+            String correo = datoss[1];
+            String genero = datoss[2];
+            String celular = datoss[3];
+            String llegada = datoss[4];
+            clientehospedado clienteh = new clientehospedado(nombre,correo,genero,celular,llegada);
+            if(hashtable.getRoomNumber(nombre)==-1){
+            arbolcedulas.delete(aux, cedula);
+            JDialog.setDefaultLookAndFeelDecorated(true);
+            String[] selectionValues = { "Simple", "Doble", "Triple","Suite" };
+            String initialSelection = "Simple";
+            String habitacion = (String) JOptionPane.showInputDialog(null, "Bienvenido/a "+nombre+", porfavor elija el tipo de habitación que desea: ",
+        "Habitación", JOptionPane.QUESTION_MESSAGE, null, selectionValues, initialSelection);
+                Room room = roomslist.findFreeRoom(habitacion);
+                if(room == null){
+                 JOptionPane.showMessageDialog(null, "Lo sentimos, no se encontró ninguna habitación disponible.");
+                }else{ 
+                int roomNumber = room.numero;
+                hashtable.addGuest(clienteh, roomNumber);
+                JOptionPane.showMessageDialog(null, "Al cliente "+nombre+" se le ha asignado la habitación "+room.tipo+" #"+Integer.toString(roomNumber)+" , en el piso "+Integer.toString(room.piso));
+                room.ocupada = true;
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"El cliente ya se encuentra hospedado.");
+            }    
+        }else{
+            JOptionPane.showMessageDialog(null, "No existen reservaciones bajo ese número de cédula.");
+        }
+        }catch(Exception e){
+                JOptionPane.showMessageDialog(null,"Error, ingrese una cédula válida.");
+                }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

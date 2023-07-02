@@ -21,6 +21,7 @@ public class Proyecto2EDD {
 static HashTable hashtable = new HashTable();
 static BST arbolcedulas = new BST();
 static BST2 arbolhistorial = new BST2();
+static RoomsList roomslist = new RoomsList();
     /**
      * @param args the command line arguments
      */
@@ -29,6 +30,7 @@ static BST2 arbolhistorial = new BST2();
         Menu1 menu1 = new Menu1();
         menu1.setVisible(true);
         menu1.setLocationRelativeTo(null);
+        cargar_habitaciones();
         cargar_datos();
         cargar_reserva();
         cargarhistorial();
@@ -43,18 +45,45 @@ static BST2 arbolhistorial = new BST2();
             i++; 
             }else{
             int roomNumber = Integer.parseInt(datoscliente[0]);
-            String nombre = datoscliente[1].replace(" ", "");
+            String name = datoscliente[1].replace(" ", "");
             String apellido = datoscliente[2].replace(" ","");
-            String name = nombre+" "+apellido;
-            hashtable.addGuest(name, roomNumber);
+            String nombre = name+" "+apellido;
+            String correo = datoscliente[3];
+            String genero = datoscliente[4];
+            String celular = datoscliente[5];
+            String llegada = datoscliente[6];
+            clientehospedado cliente = new clientehospedado(nombre,correo,genero,celular,llegada);
+            hashtable.addGuest(cliente, roomNumber);
+                System.out.println(cliente.getNombre());
+            Room aux = roomslist.pFirst;
+            while(aux!=null){
+                if(aux.numero == roomNumber){
+                    aux.ocupada = true;
+                    break;
+                }else{
+                    aux = aux.getPnext();
+                }
+            }
 
             }
         }
     }
     
+    public static void cargar_habitaciones(){
+        String texto = leer_excel(1);
+        String[] habitaciones = texto.split("\n");
+        for(int i=1;i<habitaciones.length;i++){
+            String[] datos = habitaciones[i].split("   ");
+            int numero = Integer.parseInt(datos[0]);
+            String tipo = datos[1];
+            int piso = Integer.parseInt(datos[2]);
+            Room room = new Room(numero,tipo,piso);
+            roomslist.insert(room);
+        }
+    }
+    
     public static void cargar_reserva(){
         String texto = leer_excel(0);
-        System.out.println(texto);
         String[] clientes = texto.split("\n");
         for(int i =1;i<clientes.length;i++){
         String[] datoscliente = clientes[i].split("   ");
@@ -68,7 +97,7 @@ static BST2 arbolhistorial = new BST2();
         String phone = datoscliente[6].replace(" ","");
         String llegada = datoscliente[7].replace(" ","");
         //String salida = datoscliente[8].replace(" ","");
-        String info ="Nombre: "+ name+" |Correo: "+email+" |Género: "+genero+" |Tipo de habitación: "+roomType+" |Teléfono: "+phone+" |Llegada: "+llegada+" |Salida: ";
+        String info = name+"/"+email+"/"+genero+"/"+roomType+"/"+phone+"/"+llegada;
         TreeNode n = new TreeNode(cedula,info);
         if(arbolcedulas.getRoot() == null){
             arbolcedulas.setRoot(n);
