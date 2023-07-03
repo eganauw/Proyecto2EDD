@@ -91,7 +91,11 @@ public class Menu1 extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 140, -1));
 
         jButton2.setText("Check-out");
-        jButton2.setActionCommand("Check-out");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(247, 130, 100, -1));
 
         pack();
@@ -156,7 +160,7 @@ public class Menu1 extends javax.swing.JFrame {
             String correo = datoss[1];
             String genero = datoss[2];
             String celular = datoss[3];
-            String llegada = datoss[4];
+            String llegada = datoss[4]; 
             clientehospedado clienteh = new clientehospedado(nombre,correo,genero,celular,llegada);
             if(hashtable.getRoomNumber(nombre)==-1){
             arbolcedulas.delete(aux, cedula);
@@ -185,6 +189,34 @@ public class Menu1 extends javax.swing.JFrame {
                 }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        String nombrecompleto = JOptionPane.showInputDialog("Ingrese el nombre y apellido del huésped que va a salir: ");
+        int numhab = hashtable.getRoomNumber(nombrecompleto);
+        if(numhab==-1){
+            JOptionPane.showMessageDialog(null, "No se encuentra lojado actualmente en el hotel.");
+        }else{
+            String historial = "";
+            Habitacion n = new Habitacion(numhab,historial);
+            if(arbolhistorial.getRoot()==null){
+                arbolhistorial.setRoot(n);
+            }
+            Habitacion aux = arbolhistorial.getRoot();
+            if(arbolhistorial.isInTheTree(aux, numhab)){
+                Habitacion x = arbolhistorial.search(aux,numhab);
+                x.setHistorial(n.getHistorial()+"\n"+x.getHistorial());
+            }else{
+                Habitacion root = arbolhistorial.getRoot();
+                arbolhistorial.insert(root, n);
+                
+            }
+            hashtable.removeGuest(nombrecompleto,numhab);
+            System.out.println("El cliente"+nombrecompleto+"ha desalojado el hotel de manera correcta.");
+            Room room;
+            room.ocupada = false;
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

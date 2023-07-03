@@ -93,13 +93,15 @@ public class HashTable {
         }
     }
     
-     public void buscarhab(String nombre, String apellido){
-        String nombrecompleto = nombre+apellido;
+     public void buscarhab(String nombrecompleto){
+        
         int roomNumber = hashtable.getRoomNumber(nombrecompleto);
         if (roomNumber != -1) {
-            JOptionPane.showMessageDialog(null,"El cliente " + nombre+" "+apellido + " esta hospedado en la habitación #" + roomNumber);
+            JOptionPane.showMessageDialog(null,"El cliente " + nombrecompleto + " esta hospedado en la habitación #" + roomNumber);
+            
         } else {
             JOptionPane.showMessageDialog(null,"El cliente " + nombrecompleto + " no fue encontrado");
+            
         }
     }
      
