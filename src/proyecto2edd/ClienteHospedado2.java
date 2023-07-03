@@ -8,15 +8,15 @@ package proyecto2edd;
  *
  * @author rodri
  */
-public class clientehospedado {
-    private String nombre;
+public class ClienteHospedado2 {
+     private String nombre;
     private String correo;
     private String genero;
     private String celular;
     private String llegada;
-    private clientehospedado pnext;
+    private ClienteHospedado2 pnext;
     
-    public clientehospedado(String nombre, String correo, String genero, String celular, String llegada){
+    public ClienteHospedado2(String nombre, String correo, String genero, String celular, String llegada){
         this.nombre = nombre;
         this.correo = correo;
         this.genero = genero;
@@ -70,14 +70,15 @@ public class clientehospedado {
     /**
      * @return the pnext
      */
-    public clientehospedado getPnext() {
+    public ClienteHospedado2 getPnext() {
         return pnext;
     }
 
     /**
      * @param pnext the pnext to set
      */
-    public void setPnext(clientehospedado pnext) {
+    public void setPnext(ClienteHospedado2 pnext) {
         this.pnext = pnext;
     }
+
 }

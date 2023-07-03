@@ -6,6 +6,7 @@ package proyecto2edd;
 import java.io.File;  
 import java.io.FileInputStream;  
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Iterator;  
 import javax.swing.JOptionPane;
 import org.apache.poi.ss.usermodel.Cell;  
@@ -22,6 +23,7 @@ static HashTable hashtable = new HashTable();
 static BST arbolcedulas = new BST();
 static BST2 arbolhistorial = new BST2();
 static RoomsList roomslist = new RoomsList();
+static ClientesHospedadosList clienteshospedadoslist = new ClientesHospedadosList();
 
     /**
      * @param args the command line arguments
@@ -50,9 +52,12 @@ static RoomsList roomslist = new RoomsList();
             String correo = datoscliente[3];
             String genero = datoscliente[4];
             String celular = datoscliente[5];
-            String llegada = datoscliente[6];
+            String llegada = convertToFormattedDate(datoscliente[6]);
             clientehospedado cliente = new clientehospedado(nombre,correo,genero,celular,llegada);
+            ClienteHospedado2 cliente2 = new ClienteHospedado2(nombre,correo,genero,celular,llegada);
             hashtable.addGuest(cliente, roomNumber);
+            clienteshospedadoslist.insert(cliente2);
+            
             Room aux = roomslist.pFirst;
             while(aux!=null){
                 if(aux.numero == roomNumber){
@@ -86,15 +91,14 @@ static RoomsList roomslist = new RoomsList();
         for(int i =1;i<clientes.length;i++){
         String[] datoscliente = clientes[i].split("   ");
         int cedula = Integer.parseInt(datoscliente[0]);
-        String nombre = datoscliente[1].replace(" ", "");
-        String apellido = datoscliente[2].replace(" ","");
+        String nombre = datoscliente[1];
+        String apellido = datoscliente[2];
         String name = nombre+" "+apellido;
-        String email = datoscliente[3].replace(" ","");
-        String genero = datoscliente[4].replace(" ","");
-        String roomType = datoscliente[5].replace(" ","");
-        String phone = datoscliente[6].replace(" ","");
-        String llegada = datoscliente[7].replace(" ","");
-        //String salida = datoscliente[8].replace(" ","");
+        String email = datoscliente[3];
+        String genero = datoscliente[4];
+        String roomType = datoscliente[5];
+        String phone = datoscliente[6];
+        String llegada = convertToFormattedDate(datoscliente[7]);
         String info = name+"/"+email+"/"+genero+"/"+roomType+"/"+phone+"/"+llegada;
         TreeNode n = new TreeNode(cedula,info);
         if(arbolcedulas.getRoot() == null){
@@ -121,12 +125,12 @@ public static void cargarhistorial(){
         for(int i =1;i<clientes.length;i++){
         String[] datoscliente = clientes[i].split("   ");
         int cedula = Integer.parseInt(datoscliente[0]);
-        String nombre = datoscliente[1].replace(" ", "");
-        String apellido = datoscliente[2].replace(" ","");
+        String nombre = datoscliente[1];
+        String apellido = datoscliente[2];
         String name = nombre+" "+apellido;
-        String email = datoscliente[3].replace(" ","");
-        String genero = datoscliente[4].replace(" ","");
-        String llegada = datoscliente[5].replace(" ","");
+        String email = datoscliente[3];
+        String genero = datoscliente[4];
+        String llegada = convertToFormattedDate(datoscliente[5]);
         String historial ="Cedula: "+cedula+" | Nombre: "+name +" | Correo: "+email+" | Genero: "+genero+" | Llegada: "+llegada;
         String hab = datoscliente[6].replace(" ","");
         int numhab = Integer.parseInt(hab);
@@ -143,6 +147,17 @@ public static void cargarhistorial(){
             arbolhistorial.insert(root,n);
           }
         }
+    }
+
+    public static String convertToFormattedDate(String daysPassed) {
+        int intdaysPassed = Integer.parseInt(daysPassed);
+        LocalDate baseDate = LocalDate.of(1900, 1, 1);
+        LocalDate targetDate = baseDate.plusDays(intdaysPassed);
+        int day = targetDate.getDayOfMonth();
+        int month = targetDate.getMonthValue();
+        int year = targetDate.getYear();
+
+        return String.format("%02d/%02d/%04d", day, month, year);
     }
 
     public static String leer_excel(int pagina){

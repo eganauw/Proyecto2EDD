@@ -12,12 +12,11 @@ import static proyecto2edd.Proyecto2EDD.hashtable;
  * @author rodri
  */
 public class HashTable {
-    public static final int INITIAL_CAPACITY = 10; // Initial table size
-    public static final double LOAD_FACTOR = 0.75; // Adjust the load factor as needed
+    public static final int INITIAL_CAPACITY = 10; 
+    public static final double LOAD_FACTOR = 0.75;
     private Node[] table;
     private int size;
 
-    // Constructor
     public HashTable() {
         table = new Node[INITIAL_CAPACITY];
         size = 0;
@@ -25,15 +24,13 @@ public class HashTable {
     
     public int hash(String key) {
         int hash = 0;
-        int prime = 31; // A commonly used prime number
+        int prime = 31;
 
         for (char c : key.toCharArray()) {
             hash = (hash * prime) + c;
         } return Math.abs(hash) % getTable().length;
 }
     
-
-    //Add a guest to the hash table
         public void addGuest(clientehospedado cliente , int roomNumber) {
         if (getSize() >= getTable().length * LOAD_FACTOR) {
             resizeTable();
@@ -54,7 +51,6 @@ public class HashTable {
         size++;
     }
     
-        // Resize the table when the load factor is reached
     private void resizeTable() {
         int newCapacity = getTable().length * 2;
         Node[] newTable = new Node[newCapacity];
@@ -93,7 +89,8 @@ public class HashTable {
         }
     }
     
-     public void buscarhab(String nombrecompleto){
+     public void buscarhab(String nombre, String apellido){
+         String nombrecompleto = nombre+apellido;
         
         int roomNumber = hashtable.getRoomNumber(nombrecompleto);
         if (roomNumber != -1) {
@@ -116,6 +113,37 @@ public class HashTable {
         }
         return -1; 
     }
+     
+     public void removeGuest(String key) {
+        int index = hash(key);
+
+        if (table[index] == null) {
+            System.out.println("Key not found in Hashtable.");
+            return;
+        }
+
+        Node previous = null;
+        Node current = table[index];
+
+        while (current != null && !current.getCliente().getNombre().equals(key)) {
+            previous = current;
+            current = current.getNext();
+        }
+
+        if (current == null) {
+            System.out.println("Key not found in Hashtable.");
+            return;
+        }
+
+        if (previous == null) {
+            table[index] = current.getNext();
+        } else {
+            previous.setNext(current.getNext());
+        }
+
+        size--;
+    }
+     
 
     /**
      * @return the table

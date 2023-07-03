@@ -9,6 +9,7 @@ import static proyecto2edd.Proyecto2EDD.hashtable;
 import static proyecto2edd.Proyecto2EDD.arbolcedulas;
 import static proyecto2edd.Proyecto2EDD.arbolhistorial;
 import static proyecto2edd.Proyecto2EDD.roomslist;
+import static proyecto2edd.Proyecto2EDD.clienteshospedadoslist;
 /**
  *
  * @author rodri
@@ -103,8 +104,8 @@ public class Menu1 extends javax.swing.JFrame {
 
     private void RegistroClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroClientesActionPerformed
         // TODO add your handling code here:
-        String nombre = JOptionPane.showInputDialog("Ingrese el primer nombre del huesped: ");
-        String apellido = JOptionPane.showInputDialog("Ingrese el apellido del huesped: ");
+        String nombre = capitalizeFirstLetter(JOptionPane.showInputDialog("Ingrese el primer nombre del huesped: "));
+        String apellido = capitalizeFirstLetter(JOptionPane.showInputDialog("Ingrese el apellido del huesped: "));
          hashtable.buscarhab(nombre,apellido);
     }//GEN-LAST:event_RegistroClientesActionPerformed
 
@@ -130,6 +131,16 @@ public class Menu1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BuscarReservaActionPerformed
 
+    public static String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        
+        String firstLetter = input.substring(0, 1).toUpperCase();
+        String restOfTheString = input.substring(1).toLowerCase();
+        
+        return firstLetter + restOfTheString;
+    }
     private void HistorialHabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistorialHabActionPerformed
         // TODO add your handling code here:
         String habS = JOptionPane.showInputDialog("Ingrese el número de la habitación: ");
@@ -156,12 +167,14 @@ public class Menu1 extends javax.swing.JFrame {
         if(arbolcedulas.isInTheTree(aux, cedula)){
             TreeNode cliente = arbolcedulas.search(aux, cedula);
             String[] datoss = cliente.getData().split("/");
-            String nombre = datoss[0];
+            String nombre = datoss[0].replace(" ","");
             String correo = datoss[1];
             String genero = datoss[2];
             String celular = datoss[3];
             String llegada = datoss[4]; 
             clientehospedado clienteh = new clientehospedado(nombre,correo,genero,celular,llegada);
+             ClienteHospedado2 clienteh2 = new ClienteHospedado2(nombre,correo,genero,celular,llegada);
+            clienteshospedadoslist.insert(clienteh2);
             if(hashtable.getRoomNumber(nombre)==-1){
             arbolcedulas.delete(aux, cedula);
             JDialog.setDefaultLookAndFeelDecorated(true);
@@ -192,30 +205,43 @@ public class Menu1 extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String nombrecompleto = JOptionPane.showInputDialog("Ingrese el nombre y apellido del huésped que va a salir: ");
+        try{
+        String nombre = capitalizeFirstLetter(JOptionPane.showInputDialog("Ingrese el primer nombre del huésped que va a salir: "));
+        String apellido = capitalizeFirstLetter(JOptionPane.showInputDialog("Ingrese el apellido del huesped que va a salir: "));
+        String nombrecompleto = nombre+apellido;
         int numhab = hashtable.getRoomNumber(nombrecompleto);
+        String datoscliente = "";
         if(numhab==-1){
             JOptionPane.showMessageDialog(null, "No se encuentra lojado actualmente en el hotel.");
         }else{
-            String historial = "";
-            Habitacion n = new Habitacion(numhab,historial);
-            if(arbolhistorial.getRoot()==null){
-                arbolhistorial.setRoot(n);
+            Room aux = roomslist.pFirst;
+            while(aux!=null){
+                if(numhab==aux.numero){
+                    aux.ocupada = false;
+                    JOptionPane.showMessageDialog(null,"La habitacion "+numhab+" ha sido desocupada.");
+                    break;
+                }else{
+                    aux = aux.getPnext();
+                }
             }
-            Habitacion aux = arbolhistorial.getRoot();
-            if(arbolhistorial.isInTheTree(aux, numhab)){
-                Habitacion x = arbolhistorial.search(aux,numhab);
-                x.setHistorial(n.getHistorial()+"\n"+x.getHistorial());
-            }else{
-                Habitacion root = arbolhistorial.getRoot();
-                arbolhistorial.insert(root, n);
-                
+              Habitacion habaux = arbolhistorial.getRoot();
+              Habitacion habitacionencontrada = arbolhistorial.search(habaux,numhab);
+              ClienteHospedado2 claux = clienteshospedadoslist.pFirst;
+              while(claux!=null){
+                  if(claux.getNombre().equals(nombrecompleto.replace(" ", ""))){
+                      datoscliente = "Nombre: "+claux.getNombre()+" Correo: "+claux.getCorreo()+" Genero: "+claux.getGenero()+" Celular: "+claux.getCelular()+ "Llegada: "+claux.getLlegada();
+                      arbolhistorial.search(habaux,numhab).setHistorial(habitacionencontrada.getHistorial()+"\n"+datoscliente); 
+                      break;
+                  }else{
+                      claux = claux.getPnext();
+                  }
+              }
+              hashtable.removeGuest(nombrecompleto);
             }
-            hashtable.removeGuest(nombrecompleto,numhab);
-            System.out.println("El cliente"+nombrecompleto+"ha desalojado el hotel de manera correcta.");
-            Room room;
-            room.ocupada = false;
+        }catch(Exception e ){
+            JOptionPane.showMessageDialog(null, "Error, ingrese un nombre válido.");
         }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

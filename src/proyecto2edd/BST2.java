@@ -54,8 +54,6 @@ public class BST2 {
         if (aux == null) return null;
         
         if (aux.getNumero() == numero) {
-            //String historial = aux.getHistorial();
-            //System.out.println(historial);
             return aux;
         } else if(numero < aux.getNumero()) {
             return search(aux.left, numero);

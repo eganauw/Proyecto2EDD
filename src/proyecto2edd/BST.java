@@ -57,8 +57,6 @@ public class BST {
         if (aux == null) return null;
         
         if (aux.getCedula() == cedula) {
-           // String data = aux.getData();
-            //System.out.println(data);
             return aux;
         } else if(cedula < aux.getCedula()) {
             return search(aux.getLeft(), cedula);
@@ -114,12 +112,6 @@ public class BST {
         }
     }
     
-
-    /**
-     * ========================================================================
-     * METODOS DE BORRADOS, ESTOS NO LOS VOY A EVALUAR
-     * ========================================================================
-     */
     
     /**
      * SuprimeIzq Metodo para borrar el hijo izquerdo del nodo p
